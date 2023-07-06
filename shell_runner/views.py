@@ -1,3 +1,4 @@
+import os
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from subprocess import run, PIPE
@@ -10,9 +11,12 @@ def execute_shell_command(request):
         return Response({'error': 'No se proporcionó una ruta de archivo.'}, status=400)
 
     try:
-        command = ['bash', file_path] 
-        result = run(command, shell=False, stdout=PIPE, stderr=PIPE, text=True)
-        stdout = result.stdout.strip().splitlines()
+        # Cambia los permisos del archivo para otorgar el permiso de ejecución
+        os.chmod(file_path, 0o755)
+
+        # Ejecuta el comando
+        result = run(file_path, shell=True, stdout=PIPE, stderr=PIPE, text=True)
+        stdout = result.stdout.strip()
         stderr = result.stderr.strip()
 
         return Response({
