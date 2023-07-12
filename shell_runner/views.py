@@ -33,7 +33,7 @@ def execute_shell_command(request):
     
     # Ejemplos de mensajes de registro
 
-    # helper.execute_process()
+    helper.execute_process()
     DIR_PATH = os.getcwd() + os.environ.get('DIR_PROJECT', '')
     logger.info('DIR_PATH: ' + DIR_PATH)
 
