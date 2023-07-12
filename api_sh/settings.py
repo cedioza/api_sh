@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import logging
+import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -126,8 +128,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-import logging
-import os
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -136,10 +137,10 @@ LOG_FILE = os.path.join(BASE_DIR, 'logs', 'drf.log')
 LOG_LEVEL = logging.DEBUG
 
 # Verificar la existencia del directorio de registros y otorgar permisos de escritura si es necesario
-if not os.path.exists(os.path.dirname(LOG_FILE)):
-    os.makedirs(os.path.dirname(LOG_FILE))
-
-os.chmod(os.path.dirname(LOG_FILE), 0o777)
+log_dir = os.path.dirname(LOG_FILE)
+if not os.path.exists(log_dir):
+    os.makedirs(log_dir)
+    os.chmod(log_dir, 0o777)
 
 # Configuración del registro en settings.py
 LOGGING = {
