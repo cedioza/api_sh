@@ -5,12 +5,11 @@ import os, shutil
 import logging
 from datetime import date, datetime
 from .conn_db import MysqlConnection
-from dotenv import load_dotenv
 from .constants import (COLSPECS_COBRO, COLSPECS_COBRO_46, COLSPECS_PREV, 
                         COLSPECS_PREV_24, COLUMNS_DB)
 
 
-load_dotenv()
+
 
 
 DIR_PATH = os.getcwd() + os.environ.get('DIR_PROJECT', '')

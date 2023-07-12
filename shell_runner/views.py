@@ -33,10 +33,11 @@ def execute_shell_command(request):
     
     # Ejemplos de mensajes de registro
 
-    helper.execute_process()
+    # helper.execute_process()
     DIR_PATH = os.getcwd() + os.environ.get('DIR_PROJECT', '')
     logger.info('DIR_PATH: ' + DIR_PATH)
 
     logger.info('End process...')
 
-    return Response({'message': "prueba"}, status=200)
+
+    return Response({'message': "prueba","dir":DIR_PATH,"data ext":os.getenv("DIR_PROJECT")}, status=200)
