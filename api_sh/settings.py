@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import logging
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -123,3 +125,41 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+import logging
+import os
+
+# Obtén la ruta del directorio base del proyecto
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Configuración del registro
+LOG_FILE = os.path.join(BASE_DIR, 'logs', 'drf.log')
+LOG_LEVEL = logging.DEBUG
+
+# Configuración del registro en settings.py
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': LOG_LEVEL,
+            'class': 'logging.FileHandler',
+            'filename': LOG_FILE,
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['file'],
+            'level': LOG_LEVEL,
+            'propagate': True,
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s [%(name)s]:%(levelname)s [%(filename)s, %(funcName)s(), line %(lineno)d] %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
+    },
+}

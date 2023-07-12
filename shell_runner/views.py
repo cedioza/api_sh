@@ -1,45 +1,42 @@
-import subprocess
+
 import os
 import logging
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .Helpers import helper
 
 logger = logging.getLogger(__name__)
 
+
 @api_view(['GET'])
 def execute_shell_command(request):
-    script_path = request.query_params.get('script_path')
 
-    if not script_path:
-        return Response({'error': 'No se proporcionó una ruta de script.'}, status=400)
+    # DIR_PATH = os.getcwd() + os.environ.get('DIR_PROJECT', '')
 
-    try:
-        # Verificar si el archivo del script existe
-        if not os.path.exists(script_path):
-            return Response({'error': 'El archivo del script no existe.'}, status=404)
+    logger.info('Start process...') 
+    logger.info('create folder files') 
 
-        # Ejecutar el script utilizando subprocess
-        result = subprocess.check_output(['python', script_path], stderr=subprocess.STDOUT)
-        output = result.decode('utf-8')
+    helper.create_folder('files')
+    logger.info('create folder logs') 
+    helper.create_folder('logs')
+    #         # Configuración del archivo de registro
+    # file_handler = logging.FileHandler('logs/colmena.log')
+    # formatter = logging.Formatter('%(asctime)s [%(name)s]:%(levelname)s [%(filename)s, %(funcName)s(), line %(lineno)d] %(message)s')
+    # file_handler.setFormatter(formatter)
+    
+    # # Agregar el manejador de archivo al logger
+    # logger.addHandler(file_handler)
+    
+    # # Configuración del nivel de registro
+    # logger.setLevel(logging.DEBUG)
+    # file_handler.setLevel(logging.DEBUG)
+    
+    # Ejemplos de mensajes de registro
 
-        # Registrar información utilizando el logger
-        logger.info(f'Script ejecutado: {script_path}')
-        logger.info(f'Salida del script: {output}')
+    helper.execute_process()
+    DIR_PATH = os.getcwd() + os.environ.get('DIR_PROJECT', '')
+    logger.info('DIR_PATH: ' + DIR_PATH)
 
-        return Response({
-            'script_path': script_path,
-            'output': output,
-        })
-    except subprocess.CalledProcessError as e:
-        error_output = e.output.decode('utf-8')
+    logger.info('End process...')
 
-        # Registrar información de error utilizando el logger
-        logger.error(f'Error al ejecutar el script: {script_path}')
-        logger.error(f'Salida de error: {error_output}')
-
-        return Response({'error': error_output}, status=400)
-    except Exception as e:
-        # Registrar información de error utilizando el logger
-        logger.error(f'Error inesperado: {str(e)}')
-
-        return Response({'error': str(e)}, status=500)
+    return Response({'message': "prueba"}, status=200)
