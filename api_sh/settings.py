@@ -133,14 +133,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Configuración del registro
-LOG_FILE = os.path.join(BASE_DIR, 'logs', 'drf.log')
+LOG_FILE = os.path.join(BASE_DIR, 'drf.log')
 LOG_LEVEL = logging.DEBUG
-
-# Verificar la existencia del directorio de registros y otorgar permisos de escritura si es necesario
-log_dir = os.path.dirname(LOG_FILE)
-if not os.path.exists(log_dir):
-    os.makedirs(log_dir)
-    os.chmod(log_dir, 0o777)
 
 # Configuración del registro en settings.py
 LOGGING = {
