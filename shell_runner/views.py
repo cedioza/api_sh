@@ -10,34 +10,22 @@ logger = logging.getLogger(__name__)
 
 @api_view(['GET'])
 def execute_shell_command(request):
+    try:
+        logger.info('Start process...')
+        logger.info('create folder files')
+        helper.create_folder('files')
+        logger.info('create folder logs')
+        helper.create_folder('logs')
 
-    # DIR_PATH = os.getcwd() + os.environ.get('DIR_PROJECT', '')
+        helper.execute_process()
+        DIR_PATH = os.getcwd() + os.environ.get('DIR_PROJECT', '')
+        logger.info('DIR_PATH: ' + DIR_PATH)
 
-    logger.info('Start process...') 
-    logger.info('create folder files') 
+        logger.info('End process...')
 
-    helper.create_folder('files')
-    logger.info('create folder logs') 
-    helper.create_folder('logs')
-    #         # Configuración del archivo de registro
-    # file_handler = logging.FileHandler('logs/colmena.log')
-    # formatter = logging.Formatter('%(asctime)s [%(name)s]:%(levelname)s [%(filename)s, %(funcName)s(), line %(lineno)d] %(message)s')
-    # file_handler.setFormatter(formatter)
-    
-    # # Agregar el manejador de archivo al logger
-    # logger.addHandler(file_handler)
-    
-    # # Configuración del nivel de registro
-    # logger.setLevel(logging.DEBUG)
-    # file_handler.setLevel(logging.DEBUG)
-    
-    # Ejemplos de mensajes de registro
+        return Response({'message': 'prueba', 'dir': DIR_PATH, 'data_ext': os.getenv('DIR_PROJECT')}, status=200)
 
-    helper.execute_process()
-    DIR_PATH = os.getcwd() + os.environ.get('DIR_PROJECT', '')
-    logger.info('DIR_PATH: ' + DIR_PATH)
-
-    logger.info('End process...')
-
-
-    return Response({'message': "prueba","dir":DIR_PATH,"data ext":os.getenv("DIR_PROJECT")}, status=200)
+    except Exception as e:
+        error_message = 'An error occurred: {}'.format(str(e))
+        logger.error(error_message)
+        return Response({'error': error_message,"directorio":os.environ.get('DIR_PROJECT', '--')}, status=500)
