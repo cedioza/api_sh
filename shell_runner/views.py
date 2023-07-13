@@ -14,6 +14,7 @@ load_dotenv()
 
 
 logger = logging.getLogger(__name__)
+    
 
 @api_view(['GET'])
 def execute_shell_command(request):
@@ -37,9 +38,12 @@ def execute_shell_command(request):
 
         # Ejecutar el archivo "prueba.py" en la ruta deseada
         archivo_prueba = os.path.join(ruta_deseada, "api_test.py")
-        resultado = subprocess.run(['python3', archivo_prueba], capture_output=True, text=True)
+        resultado = subprocess.run(['python', archivo_prueba], capture_output=True, text=True)
 
         logger.info(f'Archivo "prueba.py" ejecutado correctamente. Salida: {resultado.stdout}')
+
+        # Restablecer la ruta actual
+        os.chdir(ruta_actual)
 
         return Response({'ruta_actual': ruta_actual, 'elementos_ruta': elementos})
 
