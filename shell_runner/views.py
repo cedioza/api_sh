@@ -1,80 +1,49 @@
 
 import os
 import logging
+import subprocess
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .Helpers import helper
+
 
 logger = logging.getLogger(__name__)
 
 
-# @api_view(['GET'])
-# def execute_shell_command(request):
-#     try:
-#         # logger.info('Start process...')
-#         # logger.info('create folder files')
+import os
+import subprocess
+import logging
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
+logger = logging.getLogger(__name__)
 
-#         # helper.create_folder('files')
-#         # logger.info('create folder logs')
-#         # helper.create_folder('logs')
-
-#         # helper.execute_process()
-#         # DIR_PATH = os.getcwd() + os.environ.get('DIR_PROJECT', '')
-#         # logger.info('DIR_PATH: ' + DIR_PATH)
-
-
-
-#         logger.info('End process...')
-
-#         return Response({'message': 'prueba', 'dir': DIR_PATH, 'data_ext': os.getenv('DIR_PROJECT')}, status=200)
-
-#     except Exception as e:
-#         error_message = 'An error occurred: {}'.format(str(e))
-#         logger.error(error_message)
-#         return Response({'error': error_message,"directorio":os.environ.get('DIR_PROJECT', '--')}, status=500)
 
 @api_view(['GET'])
 def execute_shell_command(request):
-    
-    ruta_objetivo = "/home/ubuntu"
-    # Verificar si la ruta objetivo existe
-    if os.path.exists(ruta_objetivo):
-        archivos_en_ruta_objetivo = os.listdir(ruta_objetivo)
-        return Response(archivos_en_ruta_objetivo)
-    else:
-        mensaje = f"La ruta objetivo no existe: {ruta_objetivo}"
-        return Response({'error': mensaje}, status=404)
-      # logger.info('Start process...')
-        # Obtener la ruta del directorio principal (home)
-        # directorio_principal = os.path.expanduser("~")
-        # logger.info('Start Home ', directorio_principal)
+    try:
+        # Obtener la ruta actual
+        ruta_actual = os.getcwd()
 
-        # try:
+        logger.info(f'Ruta actual: {ruta_actual}')
 
-        #     os.chdir(directorio_principal)
-        #     mensaje = f"Cambiado al directorio principal: {directorio_principal}"
-        #     logger.info(mensaje)
+        # Cambiar al directorio "shell_runner"
+        carpeta_deseada = "shell_runner"
+        ruta_carpeta_deseada = os.path.join(ruta_actual, carpeta_deseada)
+        os.chdir(ruta_carpeta_deseada)
 
-        # except OSError:
-        #     mensaje = f"No se pudo cambiar al directorio principal: {directorio_principal}"
-        #     return Response({'error': mensaje}, status=500)
+        # Cambiar al directorio "helpers"
+        subcarpeta_deseada = "helpers"
+        ruta_subcarpeta_deseada = os.path.join(ruta_carpeta_deseada, subcarpeta_deseada)
+        os.chdir(ruta_subcarpeta_deseada)
 
+        # Obtener una lista de elementos en la subcarpeta deseada
+        elementos = os.listdir(ruta_subcarpeta_deseada)
 
+        logger.info(f'Elementos en la subcarpeta "{subcarpeta_deseada}": {elementos}')
 
+        return Response({'ruta_actual': ruta_actual, 'elementos_subcarpeta': elementos})
 
-
-        # Obtener la lista de archivos en la ruta final
-        # archivos_en_ruta_objetivo = os.listdir(directorio_principal)
-        # logger.info('Start colmena_cobros ', archivos_en_ruta_objetivo)
-
-
-    # except Exception as e:
-    #     error_message = 'An error occurred: {}'.format(str(e))
-    #     logger.error(error_message)
-    #     return Response({'error': error_message,"directorio":os.environ.get('DIR_PROJECT', '--')}, status=500)
-
-
-    # # Devolver la lista de archivos en la respuesta
-    # return Response(archivos_en_ruta_objetivo)
-
+    except Exception as e:
+        error_message = 'Ocurrió un error: {}'.format(str(e))
+        logger.exception(error_message)
+        return Response({'error': error_message}, status=500)

@@ -4,11 +4,13 @@ import numpy as np
 import os, shutil
 import logging
 from datetime import date, datetime
-from .conn_db import MysqlConnection
-from .constants import (COLSPECS_COBRO, COLSPECS_COBRO_46, COLSPECS_PREV, 
+from conn_db import MysqlConnection
+from constants import (COLSPECS_COBRO, COLSPECS_COBRO_46, COLSPECS_PREV, 
                         COLSPECS_PREV_24, COLUMNS_DB)
 
+from dotenv import load_dotenv
 
+load_dotenv()
 
 
 
@@ -146,7 +148,7 @@ def execute_process():
                     
         
 if __name__ == '__main__':
-    create_folder('files')
+    create_folder(os.environ.get('DIR_PROJECT', ''))
     create_folder('logs')
     logging.basicConfig(
         filename=DIR_PATH + "/logs/colmena.log", 
@@ -162,7 +164,7 @@ if __name__ == '__main__':
     
     logging.info('Start process...')    
     logging.info('DIR_PATH: ' + DIR_PATH)
-    execute_process()
+    # execute_process()
     logging.info('End process...')
     
     
