@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Obtener el valor de la variable de entorno
-variable_entorno = os.getenv('DIR_PROJECT')
+variable_entorno = os.getenv('test')
 
 # Crear la carpeta con el nombre de la variable de entorno
 os.mkdir(variable_entorno)
