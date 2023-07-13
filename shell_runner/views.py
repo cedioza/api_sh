@@ -48,21 +48,18 @@ def execute_shell_command(request):
 
             os.chdir(directorio_principal)
             mensaje = f"Cambiado al directorio principal: {directorio_principal}"
+            logger.info(mensaje)
+
         except OSError:
             mensaje = f"No se pudo cambiar al directorio principal: {directorio_principal}"
             return Response({'error': mensaje}, status=500)
 
-        # Navegar dos niveles más en las rutas específicas
-        ruta1 = os.path.join(directorio_principal, "colmena")
-        logger.info('Start colmena ', directorio_principal)
 
-        directorio_actual = os.path.join(ruta1, "colmena_cobros")
-        logger.info('Start colmena_cobros ', directorio_principal)
 
 
 
         # Obtener la lista de archivos en la ruta final
-        archivos_en_ruta_objetivo = os.listdir(directorio_actual)
+        archivos_en_ruta_objetivo = os.listdir(directorio_principal)
         logger.info('Start colmena_cobros ', archivos_en_ruta_objetivo)
 
 
