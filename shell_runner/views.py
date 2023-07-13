@@ -1,6 +1,7 @@
 
 import os
 import logging
+import subprocess
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -21,7 +22,6 @@ def execute_shell_command(request):
         ruta_actual = os.getcwd()
 
         logger.info(f"Ruta por variable de entorno : {os.environ.get('DIR_PROJECT', 'no_fount')}")
-
         logger.info(f'Ruta actual: {ruta_actual}')
 
         # Construir la ruta completa
@@ -34,6 +34,12 @@ def execute_shell_command(request):
         elementos = os.listdir(ruta_deseada)
 
         logger.info(f'Elementos en la ruta "{ruta_deseada}": {elementos}')
+
+        # Ejecutar el archivo "prueba.py" en la ruta deseada
+        archivo_prueba = os.path.join(ruta_deseada, "api_test.py")
+        resultado = subprocess.run(['python3', archivo_prueba], capture_output=True, text=True)
+
+        logger.info(f'Archivo "prueba.py" ejecutado correctamente. Salida: {resultado.stdout}')
 
         return Response({'ruta_actual': ruta_actual, 'elementos_ruta': elementos})
 
