@@ -32,14 +32,22 @@ def execute_shell_command(request):
 
 
         # Cambiar al directorio "shell_runner"
-        carpeta_deseada = "shell_runner"
+        carpeta_deseada = "home"
         ruta_carpeta_deseada = os.path.join(ruta_actual, carpeta_deseada)
         os.chdir(ruta_carpeta_deseada)
 
+        elementosP = os.listdir(ruta_actual)
+
+        logger.info(f'elementos ruta: {elementosP}')
+
         # Cambiar al directorio "helpers"
-        subcarpeta_deseada = "helpers"
+        subcarpeta_deseada = "ubuntu"
         ruta_subcarpeta_deseada = os.path.join(ruta_carpeta_deseada, subcarpeta_deseada)
         os.chdir(ruta_subcarpeta_deseada)
+
+        elementosP = os.listdir(ruta_actual)
+
+        logger.info(f'elementos ruta: {elementosP}')
 
         # Obtener una lista de elementos en la subcarpeta deseada
         elementos = os.listdir(ruta_subcarpeta_deseada)
