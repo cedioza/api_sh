@@ -4,8 +4,8 @@ import numpy as np
 import os, shutil
 import logging
 from datetime import date, datetime
-from conn_db import MysqlConnection
-from constants import (COLSPECS_COBRO, COLSPECS_COBRO_46, COLSPECS_PREV, 
+from .conn_db import MysqlConnection
+from .constants import (COLSPECS_COBRO, COLSPECS_COBRO_46, COLSPECS_PREV, 
                         COLSPECS_PREV_24, COLUMNS_DB)
 
 
