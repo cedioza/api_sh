@@ -145,24 +145,24 @@ def execute_process():
             shutil.move(current_path, move_to)
                     
         
-# if __name__ == '__main__':
-#     create_folder('files')
-#     create_folder('logs')
-#     logging.basicConfig(
-#         filename=DIR_PATH + "/logs/colmena.log", 
-#         format="%(asctime)s [%(name)s]:%(levelname)s [%(filename)s, %(funcName)s(), line %(lineno)d] %(message)s", 
-#         datefmt="%Y-%m-%d %H:%M:%S", 
-#         level=logging.DEBUG,
-#         # filemode="w", 
-#     )
+if __name__ == '__main__':
+    create_folder('files')
+    create_folder('logs')
+    logging.basicConfig(
+        filename=DIR_PATH + "/logs/colmena.log", 
+        format="%(asctime)s [%(name)s]:%(levelname)s [%(filename)s, %(funcName)s(), line %(lineno)d] %(message)s", 
+        datefmt="%Y-%m-%d %H:%M:%S", 
+        level=logging.DEBUG,
+        # filemode="w", 
+    )
 
     
 
         
     
-    # logging.info('Start process...')    
-    # logging.info('DIR_PATH: ' + DIR_PATH)
-    # execute_process()
-    # logging.info('End process...')
+    logging.info('Start process...')    
+    logging.info('DIR_PATH: ' + DIR_PATH)
+    execute_process()
+    logging.info('End process...')
     
     
