@@ -7,11 +7,8 @@ load_dotenv()
 # Obtener el valor de la variable de entorno
 variable_entorno = os.getenv('DIR_PROJECT')
 
-# Abrir el archivo de logs en modo de escritura
-with open('logs.txt', 'w') as archivo_logs:
-    # Escribir en el archivo de logs
-    archivo_logs.write('Hola mundo\n')
-    archivo_logs.write(f'Valor de la variable de entorno: {variable_entorno}\n')
+# Crear la carpeta con el nombre de la variable de entorno
+os.mkdir(variable_entorno)
 
 # Imprimir mensaje de éxito
-print('Archivo de logs creado exitosamente')
+print(f'Carpeta "{variable_entorno}" creada exitosamente')
