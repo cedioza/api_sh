@@ -36,53 +36,45 @@ logger = logging.getLogger(__name__)
 
 @api_view(['GET'])
 def execute_shell_command(request):
-    try:
-
-
-        logger.info('Start process...')
+    
+    ruta_objetivo = "/home/ubuntu"
+    # Verificar si la ruta objetivo existe
+    if os.path.exists(ruta_objetivo):
+        archivos_en_ruta_objetivo = os.listdir(ruta_objetivo)
+        return Response(archivos_en_ruta_objetivo)
+    else:
+        mensaje = f"La ruta objetivo no existe: {ruta_objetivo}"
+        return Response({'error': mensaje}, status=404)
+      # logger.info('Start process...')
         # Obtener la ruta del directorio principal (home)
-        directorio_principal = os.path.expanduser("~")
-        logger.info('Start Home ', directorio_principal)
+        # directorio_principal = os.path.expanduser("~")
+        # logger.info('Start Home ', directorio_principal)
 
-        try:
+        # try:
 
-            os.chdir(directorio_principal)
-            mensaje = f"Cambiado al directorio principal: {directorio_principal}"
-            logger.info(mensaje)
+        #     os.chdir(directorio_principal)
+        #     mensaje = f"Cambiado al directorio principal: {directorio_principal}"
+        #     logger.info(mensaje)
 
-        except OSError:
-            mensaje = f"No se pudo cambiar al directorio principal: {directorio_principal}"
-            return Response({'error': mensaje}, status=500)
+        # except OSError:
+        #     mensaje = f"No se pudo cambiar al directorio principal: {directorio_principal}"
+        #     return Response({'error': mensaje}, status=500)
 
 
 
 
 
         # Obtener la lista de archivos en la ruta final
-        archivos_en_ruta_objetivo = os.listdir(directorio_principal)
-        logger.info('Start colmena_cobros ', archivos_en_ruta_objetivo)
+        # archivos_en_ruta_objetivo = os.listdir(directorio_principal)
+        # logger.info('Start colmena_cobros ', archivos_en_ruta_objetivo)
 
 
-    except Exception as e:
-        error_message = 'An error occurred: {}'.format(str(e))
-        logger.error(error_message)
-        return Response({'error': error_message,"directorio":os.environ.get('DIR_PROJECT', '--')}, status=500)
+    # except Exception as e:
+    #     error_message = 'An error occurred: {}'.format(str(e))
+    #     logger.error(error_message)
+    #     return Response({'error': error_message,"directorio":os.environ.get('DIR_PROJECT', '--')}, status=500)
 
 
-    # Devolver la lista de archivos en la respuesta
-    return Response(archivos_en_ruta_objetivo)
+    # # Devolver la lista de archivos en la respuesta
+    # return Response(archivos_en_ruta_objetivo)
 
-
-@api_view(['GET'])
-def change_to_home_directory(request):
-    # Obtener la ruta del directorio principal (home)
-    directorio_principal = os.path.expanduser("~")
-
-    # Cambiar al directorio principal
-    try:
-        os.chdir(directorio_principal)
-        mensaje = f"Cambiado al directorio principal: {directorio_principal}"
-        return Response({'mensaje': mensaje})
-    except OSError:
-        mensaje = f"No se pudo cambiar al directorio principal: {directorio_principal}"
-        return Response({'error': mensaje}, status=500)
