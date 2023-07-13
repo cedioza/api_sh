@@ -44,6 +44,14 @@ def execute_shell_command(request):
         directorio_principal = os.path.expanduser("~")
         logger.info('Start Home ', directorio_principal)
 
+        try:
+
+            os.chdir(directorio_principal)
+            mensaje = f"Cambiado al directorio principal: {directorio_principal}"
+        except OSError:
+            mensaje = f"No se pudo cambiar al directorio principal: {directorio_principal}"
+            return Response({'error': mensaje}, status=500)
+
         # Navegar dos niveles más en las rutas específicas
         ruta1 = os.path.join(directorio_principal, "colmena")
         logger.info('Start colmena ', directorio_principal)
@@ -66,3 +74,18 @@ def execute_shell_command(request):
 
     # Devolver la lista de archivos en la respuesta
     return Response(archivos_en_ruta_objetivo)
+
+
+@api_view(['GET'])
+def change_to_home_directory(request):
+    # Obtener la ruta del directorio principal (home)
+    directorio_principal = os.path.expanduser("~")
+
+    # Cambiar al directorio principal
+    try:
+        os.chdir(directorio_principal)
+        mensaje = f"Cambiado al directorio principal: {directorio_principal}"
+        return Response({'mensaje': mensaje})
+    except OSError:
+        mensaje = f"No se pudo cambiar al directorio principal: {directorio_principal}"
+        return Response({'error': mensaje}, status=500)
