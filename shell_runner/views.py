@@ -26,6 +26,11 @@ def execute_shell_command(request):
 
         logger.info(f'Ruta actual: {ruta_actual}')
 
+        elementosP = os.listdir(ruta_actual)
+
+        logger.info(f'elementos ruta: {elementosP}')
+
+
         # Cambiar al directorio "shell_runner"
         carpeta_deseada = "shell_runner"
         ruta_carpeta_deseada = os.path.join(ruta_actual, carpeta_deseada)
