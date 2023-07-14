@@ -22,7 +22,7 @@ def execute_shell_command(request):
 
          # Ejecutar el archivo "script.sh" en la ruta deseada
         logger.info('Ejecutando test() desde Helpers')
-        test.procesar_datos()
+        test.procesar_datos(logger)
 
         # Construir la ruta completa
         ruta_deseada = os.path.join(ruta_actual, "var", "www", "html", "api_sh")

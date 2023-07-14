@@ -1,14 +1,22 @@
 import os
-import logging
 import csv
 import pandas as pd
 import mysql.connector
 
-# Configurar el registro
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def procesar_datos():
+
+
+def procesar_datos(logger):
     try:
+        ruta_actual = os.getcwd()
+        logger.info(f'Ruta actual: {ruta_actual}')
+
+        ruta_deseada = os.path.join(ruta_actual, "var", "www", "html", "api_sh")
+
+        # Cambiar al directorio deseado
+        os.chdir(ruta_deseada)
+        logger.info(f'Ruta deseada: {ruta_deseada}')
+
         # Obtener el valor de la variable de entorno
         variable_entorno = os.getenv('test')
 
@@ -16,7 +24,7 @@ def procesar_datos():
         if not os.path.exists(variable_entorno):
             os.mkdir(variable_entorno)
             # Registrar mensaje de éxito
-            logging.info(f'Carpeta "{variable_entorno}" creada exitosamente')
+            logger.info(f'Carpeta "{variable_entorno}" creada exitosamente')
 
         # Acceder a la carpeta creada
         os.chdir(variable_entorno)
@@ -45,41 +53,41 @@ def procesar_datos():
                     escritor.writerow(dato)
 
             # Registrar mensaje de éxito
-            logging.info(f'Archivo CSV "{nombre_archivo}" creado exitosamente')
+            logger.info(f'Archivo CSV "{nombre_archivo}" creado exitosamente')
 
         # Leer el archivo CSV con Pandas
-        logging.info(f'Leyendo archivo CSV "{nombre_archivo}"...')
+        logger.info(f'Leyendo archivo CSV "{nombre_archivo}"...')
         data = pd.read_csv(nombre_archivo)
 
         # Imprimir los primeros registros del archivo CSV
-        logging.info('Registros del archivo CSV:')
-        print(data.head())
+        logger.info('Registros del archivo CSV:')
+        logger.info(data.head())
 
         # Conectar a la base de datos MySQL
-        logging.info('Conectando a la base de datos...')
+        logger.info('Conectando a la base de datos...')
         cnx = mysql.connector.connect(user=os.getenv('user'), password=os.getenv('password'), host=os.getenv('host'), database=os.getenv('database'))
 
         # Crear un cursor para ejecutar consultas
         cursor = cnx.cursor()
 
         # Ejemplo de consulta y recuperación de datos
-        logging.info('Ejecutando consulta en la base de datos...')
+        logger.info('Ejecutando consulta en la base de datos...')
         cursor.execute('SELECT * FROM tabla')
         resultados = cursor.fetchall()
 
         # Imprimir los resultados de la consulta
-        logging.info('Resultados de la consulta:')
+        logger.info('Resultados de la consulta:')
         for row in resultados:
             print(row)
-            logging.info(row)
+            logger.info(row)
 
         # Cerrar la conexión a la base de datos
-        logging.info('Cerrando conexión a la base de datos...')
+        logger.info('Cerrando conexión a la base de datos...')
         cnx.close()
 
         return True
 
     except Exception as e:
         error_message = 'Ocurrió un error: {}'.format(str(e))
-        logging.exception(error_message)
+        logger.exception(error_message)
         return False
