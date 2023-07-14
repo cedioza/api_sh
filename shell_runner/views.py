@@ -3,11 +3,11 @@ import logging
 import subprocess
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .Helpers import test
 
 from dotenv import load_dotenv
 
 load_dotenv()
-
 
 logger = logging.getLogger(__name__)
 
@@ -20,6 +20,10 @@ def execute_shell_command(request):
         logger.info(f"Ruta por variable de entorno: {os.environ.get('test', 'no_encontrada')}")
         logger.info(f'Ruta actual: {ruta_actual}')
 
+         # Ejecutar el archivo "script.sh" en la ruta deseada
+        logger.info('Ejecutando test() desde Helpers')
+        test.procesar_datos()
+
         # Construir la ruta completa
         ruta_deseada = os.path.join(ruta_actual, "var", "www", "html", "api_sh")
 
@@ -31,11 +35,7 @@ def execute_shell_command(request):
 
         logger.info(f'Elementos en la ruta "{ruta_deseada}": {elementos}')
 
-        # Ejecutar el archivo "script.sh" en la ruta deseada
-        archivo_script = os.path.join(ruta_deseada, "script.sh")
-        resultado = subprocess.run(['sh', archivo_script], capture_output=True, text=True)
-
-        logger.info(f'Archivo "script.sh" ejecutado correctamente. Salida: {resultado.stdout}')
+        
 
         # Restablecer la ruta actual
         os.chdir(ruta_actual)
