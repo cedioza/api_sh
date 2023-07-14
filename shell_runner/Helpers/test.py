@@ -72,14 +72,17 @@ def procesar_datos(logger):
 
         # Ejemplo de consulta y recuperación de datos
         logger.info('Ejecutando consulta en la base de datos...')
-        cursor.execute('SELECT * FROM tabla')
+        cursor.execute('SELECT * FROM `Election`')
         resultados = cursor.fetchall()
+
+        logger.info(f"\n resultado completo \n {resultados}")
+
 
         # Imprimir los resultados de la consulta
         logger.info('Resultados de la consulta:')
         for row in resultados:
             print(row)
-            logger.info(row)
+            logger.info(f"\n linea 1 \n {row}")
 
         # Cerrar la conexión a la base de datos
         logger.info('Cerrando conexión a la base de datos...')
