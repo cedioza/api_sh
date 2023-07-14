@@ -13,9 +13,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import logging
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
+import os
+
+os.environ.setdefault("MY_VARIABLE", "cargo la variable de setting")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

@@ -1,10 +1,11 @@
-from decouple import config
 import os
+from dotenv import load_dotenv
+
+# Cargar variables de entorno desde el archivo .env
+load_dotenv()
 
 # Obtener el valor de la variable de entorno
-variable_entorno = config('TEST')
-
-
+variable_entorno = os.getenv('test')
 
 # Crear la carpeta con el nombre de la variable de entorno
 os.mkdir(variable_entorno)
