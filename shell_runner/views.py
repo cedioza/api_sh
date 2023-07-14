@@ -4,6 +4,10 @@ import subprocess
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +17,7 @@ def execute_shell_command(request):
         # Obtener la ruta actual
         ruta_actual = os.getcwd()
 
-        logger.info(f"Ruta por variable de entorno: {os.environ.get('MY_VARIABLE', 'no_encontrada')}")
+        logger.info(f"Ruta por variable de entorno: {os.environ.get('test', 'no_encontrada')}")
         logger.info(f'Ruta actual: {ruta_actual}')
 
         # Construir la ruta completa
