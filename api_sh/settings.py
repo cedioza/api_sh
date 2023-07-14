@@ -16,7 +16,14 @@ import os
 
 import os
 
-os.environ.setdefault("MY_VARIABLE", "cargo la variable de setting")
+os.environ.setdefault("test", "carpeta_prueba")
+os.environ.setdefault("user", "uiamjssl5oopofpa")
+os.environ.setdefault("password", "PPIohW2KWFbUjtGnWnIQ")
+os.environ.setdefault("host", "buehzqppb0hzxylmturu-mysql.services.clever-cloud.com")
+os.environ.setdefault("database", "buehzqppb0hzxylmturu")
+
+
+user='uiamjssl5oopofpa'
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

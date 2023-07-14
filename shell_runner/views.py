@@ -4,9 +4,6 @@ import subprocess
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from dotenv import load_dotenv
-
-load_dotenv()
 
 logger = logging.getLogger(__name__)
 
