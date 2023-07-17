@@ -2,7 +2,6 @@ import pandas as pd
 import re
 import numpy as np
 import os, shutil
-import logging
 from datetime import date, datetime
 from .conn_db import MysqlConnection
 from .constants import (COLSPECS_COBRO, COLSPECS_COBRO_46, COLSPECS_PREV, 
@@ -34,7 +33,7 @@ def execute_process(logger):
 
     for path in os.listdir(files_path):
         if os.path.isfile(os.path.join(files_path, path)):
-            logging.info('Processing file: ' + path)
+            logger.info('Processing file: ' + path)
             # extract the file name and extension
             split_tup = os.path.splitext(path)
             file_name, _ = split_tup
@@ -109,6 +108,9 @@ def execute_process(logger):
                 database=os.environ.get('MYSQL_DB_NAME')
             )
 
+            logger.info(f"conexion base de datos")
+
+
             head = "INSERT INTO %s " % db_table
             columns = '(%s)' % ','.join(data)
             values = """VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
@@ -139,15 +141,20 @@ def execute_process(logger):
 
             if list_params:
                 query = head + columns + values
-                logging.info('execute query... /n' + query)
                 try:
                     db_connection.insert(query=query, params=list_params)
+                    logger.info(f"se inserto con extio  carpeta ")
+
                 except Exception as e:
+                    logger.info(f"error insertando base de datos ")
+
                     logger.error(str(e))
 
             new_folder = day + '-' + month + '-' + year
             current_path = os.path.join(files_path, path)
             move_to = os.path.join(files_path, new_folder)
+            logger.info(f"moviendo carpeta ")
+
             create_folder(move_to,logger)
             shutil.move(current_path, move_to)
 
