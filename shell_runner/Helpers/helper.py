@@ -10,7 +10,7 @@ from .constants import (COLSPECS_COBRO, COLSPECS_COBRO_46, COLSPECS_PREV,
 
 ruta_actual = os.getcwd()
 
-ruta_actual = os.path.join(ruta_actual, "var", "www", "html", "api_sh")
+ruta_actual = os.path.join(ruta_actual, "var", "www", "html", "api_sh","files")
 # Cambiar al directorio deseado
 os.chdir(ruta_actual)
 
@@ -27,13 +27,12 @@ def execute_process(logger):
 
     """ Load directory path local and save mysql data """
     # list file and directories
-    files_path = os.path.join(ruta_actual, 'files')
-    os.chdir(files_path)
-    logger.info(f"ruta actual para proceso: {files_path}")
-    logger.info(f"listado de archivos: {os.listdir(files_path)}")
 
-    for path in os.listdir(files_path):
-        if os.path.isfile(os.path.join(files_path, path)):
+    logger.info(f"ruta actual para proceso: {ruta_actual}")
+    logger.info(f"listado de archivos: {os.listdir(ruta_actual)}")
+
+    for path in os.listdir(ruta_actual):
+        if os.path.isfile(os.path.join(ruta_actual, path)):
             logger.info('Processing file: ' + path)
             # extract the file name and extension
             split_tup = os.path.splitext(path)
@@ -75,7 +74,7 @@ def execute_process(logger):
 
 
             read_file = pd.read_fwf(
-                os.path.join(files_path, path),
+                os.path.join(ruta_actual, path),
                 # skiprows=36,
                 # skipfooter=5,
                 colspecs=colspecs,
@@ -86,7 +85,7 @@ def execute_process(logger):
 
             # Create csv File
             # read_file.to_csv(
-            #     files_path + file_name + '.csv', 
+            #     ruta_actual + file_name + '.csv', 
             #     sep='|',
             #     index=False,
             #     encoding='utf8'
@@ -153,13 +152,13 @@ def execute_process(logger):
 
             new_folder = day + '-' + month + '-' + year
             logger.info(f"nombre carpeta: {new_folder}")
-            current_path = os.path.join(files_path, path)
+            current_path = os.path.join(ruta_actual, path)
             logger.info(f"current path actual: {current_path}")
 
-            move_to = os.path.join(files_path, new_folder)
-            files_path = os.path.join(ruta_actual, 'files')
-            logger.info(f"ruta actual para proceso: {files_path}")
-            logger.info(f"listado de archivos: {os.listdir(files_path)}")
+            move_to = os.path.join(ruta_actual, new_folder)
+            ruta_actual = os.path.join(ruta_actual, 'files')
+            logger.info(f"ruta actual para proceso: {ruta_actual}")
+            logger.info(f"listado de archivos: {os.listdir(ruta_actual)}")
             logger.info(f"moviendo carpeta ")
             logger.info(f" ruta a mover :{new_folder}")
             create_folder(new_folder,logger)
