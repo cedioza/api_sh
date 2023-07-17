@@ -11,9 +11,9 @@ from .constants import (COLSPECS_COBRO, COLSPECS_COBRO_46, COLSPECS_PREV,
 
 ruta_actual = os.getcwd()
 
-ruta_deseada = os.path.join(ruta_actual, "var", "www", "html", "api_sh")
+ruta_actual = os.path.join(ruta_actual, "var", "www", "html", "api_sh")
 # Cambiar al directorio deseado
-os.chdir(ruta_deseada)
+os.chdir(ruta_actual)
 
 def create_folder(folder, logger):
     logger.info(f'Ruta actual: {ruta_actual}')
