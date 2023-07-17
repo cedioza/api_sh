@@ -7,8 +7,8 @@ from datetime import date, datetime
 from .conn_db import MysqlConnection
 from .constants import (COLSPECS_COBRO, COLSPECS_COBRO_46, COLSPECS_PREV, 
                         COLSPECS_PREV_24, COLUMNS_DB)
-
-ruta_actual = "/var/www/html/api_sh"
+ruta_actual = os.getcwd()
+ruta_actual = ruta_actual +"/var/www/html/api_sh"
 
 def create_folder(folder, logger):
     # Crear la carpeta con el nombre de la variable de entorno si no existe
