@@ -28,7 +28,7 @@ def execute_process(logger):
     """ Load directory path local and save mysql data """
     # list file and directories
     files_path = os.path.join(ruta_actual, 'files')
-    os.chdir(ruta_actual)
+    os.chdir(files_path)
     logger.info(f"ruta actual para proceso: {files_path}")
     logger.info(f"listado de archivos: {os.listdir(files_path)}")
 
