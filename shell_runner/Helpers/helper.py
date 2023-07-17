@@ -15,7 +15,7 @@ ruta_actual = os.path.join(ruta_actual, "var", "www", "html", "api_sh")
 os.chdir(ruta_actual)
 
 def create_folder(folder, logger):
-    logger.info(f'Ruta actual: {ruta_actual}')
+    logger.info(f'Ruta actual: {folder}')
     # Crear la carpeta con el nombre de la variable de entorno si no existe
     if not os.path.exists(folder):
         os.mkdir(folder)
