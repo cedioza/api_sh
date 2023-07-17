@@ -22,9 +22,7 @@ def execute_shell_command(request):
 
          # Ejecutar el archivo "script.sh" en la ruta deseada
         logger.info('Ejecutando test() desde Helpers')
-        helper.create_folder("archios",logger)
-        helper.create_folder("carpeta_de_prueba",logger)
-        helper.create_folder("carpeta_prueba",logger)
+        helper.create_folder("files",logger)
         helper.processTest(logger)
 
 
