@@ -11,10 +11,16 @@ from .constants import (COLSPECS_COBRO, COLSPECS_COBRO_46, COLSPECS_PREV,
 
 
 
-DIR_PATH = os.getcwd()
+ruta_actual = os.getcwd()
+ruta_deseada = os.path.join(ruta_actual, "var", "www", "html", "api_sh")
+
+        # Cambiar al directorio deseado
+os.chdir(ruta_deseada)
+
 
 
 def create_folder(folder,logger):
+
 
 
         # Crear la carpeta con el nombre de la variable de entorno si no existe
