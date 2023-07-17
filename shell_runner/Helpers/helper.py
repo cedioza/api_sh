@@ -160,8 +160,8 @@ def execute_process(logger):
             logger.info(f"ruta actual para proceso: {files_path}")
             logger.info(f"listado de archivos: {os.listdir(files_path)}")
             logger.info(f"moviendo carpeta ")
-            logger.info(f" ruta a mover :{move_to}")
-            create_folder(move_to,logger)
+            logger.info(f" ruta a mover :{new_folder}")
+            create_folder(new_folder,logger)
             logger.info(f"muere intentando mover  carpeta ")
             shutil.move(current_path, move_to)
 
