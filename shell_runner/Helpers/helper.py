@@ -8,21 +8,39 @@ from .conn_db import MysqlConnection
 from .constants import (COLSPECS_COBRO, COLSPECS_COBRO_46, COLSPECS_PREV, 
                         COLSPECS_PREV_24, COLUMNS_DB)
 
-from dotenv import load_dotenv
-
-load_dotenv()
 
 
 
-DIR_PATH = os.getcwd() + os.environ.get('DIR_PROJECT', '')
+DIR_PATH = os.getcwd()
 
 
-def create_folder(folder):
+def create_folder(folder,logger):
+
     """ Create folder if exist"""
     full_path = DIR_PATH + '/' + folder
     if not os.path.isdir(full_path):
         # not present then create it.
         os.makedirs(full_path)
+        logger.info(f'carpeta en la ruta : "{full_path}" creado exitosamente')
+
+def processTest(logger):
+
+
+    db_connection = MysqlConnection(
+        host=os.environ.get('MYSQL_DB_HOST'),
+        user=os.environ.get('MYSQL_DB_USER'),
+        password=os.environ.get('MYSQL_DB_PASSWORD'),
+        database=os.environ.get('MYSQL_DB_NAME')
+    )
+
+
+        # Ejemplo de consulta y recuperación de datos
+    logger.info('Ejecutando consulta en la base de datos...')
+    cursor = db_connection.select('SELECT * FROM `preventiva`')
+    resultados = cursor.fetchall()
+    logger.info(f"\n resultado completo \n {resultados}")
+
+    
 
 
 def execute_process():   
@@ -147,24 +165,24 @@ def execute_process():
             shutil.move(current_path, move_to)
                     
         
-if __name__ == '__main__':
-    create_folder(os.environ.get('DIR_PROJECT', ''))
-    create_folder('logs')
-    logging.basicConfig(
-        filename=DIR_PATH + "/logs/colmena.log", 
-        format="%(asctime)s [%(name)s]:%(levelname)s [%(filename)s, %(funcName)s(), line %(lineno)d] %(message)s", 
-        datefmt="%Y-%m-%d %H:%M:%S", 
-        level=logging.DEBUG,
-        # filemode="w", 
-    )
+# if __name__ == '__main__':
+#     create_folder(os.environ.get('DIR_PROJECT', ''))
+#     create_folder('logs')
+#     logging.basicConfig(
+#         filename=DIR_PATH + "/logs/colmena.log", 
+#         format="%(asctime)s [%(name)s]:%(levelname)s [%(filename)s, %(funcName)s(), line %(lineno)d] %(message)s", 
+#         datefmt="%Y-%m-%d %H:%M:%S", 
+#         level=logging.DEBUG,
+#         # filemode="w", 
+#     )
 
     
 
         
     
-    logging.info('Start process...')    
-    logging.info('DIR_PATH: ' + DIR_PATH)
-    # execute_process()
-    logging.info('End process...')
+#     logging.info('Start process...')    
+#     logging.info('DIR_PATH: ' + DIR_PATH)
+#     # execute_process()
+#     logging.info('End process...')
     
     

@@ -16,11 +16,10 @@ import os
 
 import os
 
-os.environ.setdefault("test", "carpeta_prueba")
-os.environ.setdefault("user", "uiamjssl5oopofpa")
-os.environ.setdefault("password", "PPIohW2KWFbUjtGnWnIQ")
-os.environ.setdefault("host", "buehzqppb0hzxylmturu-mysql.services.clever-cloud.com")
-os.environ.setdefault("database", "buehzqppb0hzxylmturu")
+os.environ.setdefault("MYSQL_DB_USER", "dgualdron")
+os.environ.setdefault("MYSQL_DB_PASSWORD", "91532004ab")
+os.environ.setdefault("MYSQL_DB_HOST", "apps.ccsmckgi9ggi.us-east-1.rds.amazonaws.com")
+os.environ.setdefault("MYSQL_DB_NAME", "api_colmena")
 
 
 user='uiamjssl5oopofpa'
