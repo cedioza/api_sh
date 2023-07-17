@@ -72,7 +72,7 @@ def execute_process(logger):
             else:
                 continue
 
-            logger.info('db_table: ' + db_table)
+
 
             read_file = pd.read_fwf(
                 os.path.join(files_path, path),
@@ -138,7 +138,7 @@ def execute_process(logger):
 
             if list_params:
                 query = head + columns + values
-                # logging.info('execute query... /n' + query)
+                logging.info('execute query... /n' + query)
                 try:
                     db_connection.insert(query=query, params=list_params)
                 except Exception as e:
