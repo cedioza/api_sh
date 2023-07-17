@@ -16,12 +16,12 @@ DIR_PATH = os.getcwd()
 
 def create_folder(folder,logger):
 
-    """ Create folder if exist"""
-    full_path = DIR_PATH + '/' + folder
-    if not os.path.isdir(full_path):
-        # not present then create it.
-        os.makedirs(full_path)
-        logger.info(f'carpeta en la ruta : "{full_path}" creado exitosamente')
+
+        # Crear la carpeta con el nombre de la variable de entorno si no existe
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+        # Registrar mensaje de éxito
+        logger.info(f'Carpeta "{folder}" creada exitosamente')
 
 def processTest(logger):
 
