@@ -148,7 +148,7 @@ def execute_process(logger):
             new_folder = day + '-' + month + '-' + year
             current_path = os.path.join(files_path, path)
             move_to = os.path.join(files_path, new_folder)
-            create_folder(move_to)
+            create_folder(move_to,logger)
             shutil.move(current_path, move_to)
 
             logger.info("Proceso Finalizado ")
