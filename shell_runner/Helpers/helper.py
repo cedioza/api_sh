@@ -12,48 +12,27 @@ from .constants import (COLSPECS_COBRO, COLSPECS_COBRO_46, COLSPECS_PREV,
 
 
 ruta_actual = os.getcwd()
-ruta_deseada = os.path.join(ruta_actual, "var", "www", "html", "api_sh")
-
-        # Cambiar al directorio deseado
-os.chdir(ruta_deseada)
-
+ruta_actual = os.path.join(ruta_actual, "var", "www", "html", "api_sh")
+os.chdir(ruta_actual)
 
 
 def create_folder(folder,logger):
-
-
-
         # Crear la carpeta con el nombre de la variable de entorno si no existe
     if not os.path.exists(folder):
         os.mkdir(folder)
         # Registrar mensaje de éxito
         logger.info(f'Carpeta "{folder}" creada exitosamente')
 
-def processTest(logger):
 
+def execute_process(logger):   
+    logger.info("Comienzo de proceso ")
 
-    db_connection = MysqlConnection(
-        host=os.environ.get('MYSQL_DB_HOST'),
-        user=os.environ.get('MYSQL_DB_USER'),
-        password=os.environ.get('MYSQL_DB_PASSWORD'),
-        database=os.environ.get('MYSQL_DB_NAME')
-    )
-
-
-        # Ejemplo de consulta y recuperación de datos
-    logger.info('Ejecutando consulta en la base de datos...')
-    cursor = db_connection.select('SELECT * FROM `preventiva`')
-    resultados = cursor.fetchall()
-    logger.info(f"\n resultado completo \n {resultados}")
-
-    
-
-
-def execute_process():   
     """ Load directory path local and save mysql data """
     # list file and directories
-    files_path = DIR_PATH + '/files/'
-    logging.info(files_path)
+    files_path = ruta_actual + '/files/'
+    logger.info(f"ruta actual para proceso : {files_path}")
+    logger.info(f"listado de archivos : {os.listdir(files_path)}")
+
     for path in os.listdir(files_path):
         if os.path.isfile(os.path.join(files_path, path)):
             logging.info('Precessing file: ' + path)
@@ -94,7 +73,7 @@ def execute_process():
             else:
                 continue
             
-            logging.info('db_table: ' + db_table)
+            logger.info('db_table: ' + db_table)
                 
             read_file = pd.read_fwf(
                 files_path + path,
@@ -135,6 +114,8 @@ def execute_process():
             values = """VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
                 %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
             """
+
+            logger.info("Información insertada con extio de la tabla {db_table}")
             list_params = []
             for record in records:
                 if db_table == 'preventiva':
@@ -162,33 +143,13 @@ def execute_process():
                 try:
                     db_connection.insert(query=query, params=list_params)
                 except Exception as e:
-                    logging.error(str(e))
+                    logger.error(str(e))
                    
             new_folder = day + '-' + month + '-' + year
             current_path = 'files/' + path
             move_to = 'files/' + new_folder
             create_folder(move_to)
             shutil.move(current_path, move_to)
+
+            logger.info("Proceso Finalizado ")
                     
-        
-# if __name__ == '__main__':
-#     create_folder(os.environ.get('DIR_PROJECT', ''))
-#     create_folder('logs')
-#     logging.basicConfig(
-#         filename=DIR_PATH + "/logs/colmena.log", 
-#         format="%(asctime)s [%(name)s]:%(levelname)s [%(filename)s, %(funcName)s(), line %(lineno)d] %(message)s", 
-#         datefmt="%Y-%m-%d %H:%M:%S", 
-#         level=logging.DEBUG,
-#         # filemode="w", 
-#     )
-
-    
-
-        
-    
-#     logging.info('Start process...')    
-#     logging.info('DIR_PATH: ' + DIR_PATH)
-#     # execute_process()
-#     logging.info('End process...')
-    
-    
