@@ -8,38 +8,31 @@ from .conn_db import MysqlConnection
 from .constants import (COLSPECS_COBRO, COLSPECS_COBRO_46, COLSPECS_PREV, 
                         COLSPECS_PREV_24, COLUMNS_DB)
 
+ruta_actual = "/var/www/html/api_sh"
 
-
-
-ruta_actual = os.getcwd()
-ruta_actual = os.path.join(ruta_actual, "var", "www", "html", "api_sh")
-os.chdir(ruta_actual)
-
-
-def create_folder(folder,logger):
-        # Crear la carpeta con el nombre de la variable de entorno si no existe
+def create_folder(folder, logger):
+    # Crear la carpeta con el nombre de la variable de entorno si no existe
     if not os.path.exists(folder):
         os.mkdir(folder)
         # Registrar mensaje de éxito
         logger.info(f'Carpeta "{folder}" creada exitosamente')
 
-
-def execute_process(logger):   
+def execute_process(logger):
     logger.info("Comienzo de proceso ")
 
     """ Load directory path local and save mysql data """
     # list file and directories
-    files_path = ruta_actual + '/files/'
-    logger.info(f"ruta actual para proceso : {files_path}")
-    logger.info(f"listado de archivos : {os.listdir(files_path)}")
+    files_path = os.path.join(ruta_actual, 'files')
+    logger.info(f"ruta actual para proceso: {files_path}")
+    logger.info(f"listado de archivos: {os.listdir(files_path)}")
 
     for path in os.listdir(files_path):
         if os.path.isfile(os.path.join(files_path, path)):
-            logging.info('Precessing file: ' + path)
+            logging.info('Processing file: ' + path)
             # extract the file name and extension
             split_tup = os.path.splitext(path)
             file_name, _ = split_tup
-            
+
             names = []
             data = COLUMNS_DB[:34]
             if file_name.lower().startswith('cobro'):
@@ -72,18 +65,18 @@ def execute_process(logger):
                         names.append(str(i))
             else:
                 continue
-            
+
             logger.info('db_table: ' + db_table)
-                
+
             read_file = pd.read_fwf(
-                files_path + path,
+                os.path.join(files_path, path),
                 # skiprows=36,
                 # skipfooter=5,
                 colspecs=colspecs,
                 encoding='ISO-8859-1',
                 names=names
             )
-            
+
             # Create csv File
             # read_file.to_csv(
             #     files_path + file_name + '.csv', 
@@ -91,7 +84,7 @@ def execute_process(logger):
             #     index=False,
             #     encoding='utf8'
             # )
-            
+
             # Create Dataframe
             df = pd.DataFrame(read_file)
             df = df.replace(np.nan, '')
@@ -100,7 +93,7 @@ def execute_process(logger):
             month = date_str[4:6]
             day = date_str[6:8]
             file_date = date(int(year), int(month), int(day))
-            
+
             # Connect DB
             db_connection = MysqlConnection(
                 host=os.environ.get('MYSQL_DB_HOST'),
@@ -108,48 +101,47 @@ def execute_process(logger):
                 password=os.environ.get('MYSQL_DB_PASSWORD'),
                 database=os.environ.get('MYSQL_DB_NAME')
             )
-            
+
             head = "INSERT INTO %s " % db_table
             columns = '(%s)' % ','.join(data)
             values = """VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
                 %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
             """
 
-            logger.info("Información insertada con extio de la tabla {db_table}")
+            logger.info(f"Información insertada con éxito en la tabla {db_table}")
             list_params = []
             for record in records:
                 if db_table == 'preventiva':
                     pattern = '\S+[\@]\S+'
                     email = re.findall(pattern, record['35'], re.IGNORECASE)
                     record['35'] = email[0] if email else ''
-                    
+
                 record['36'] = file_date
                 record['37'] = month
                 record['38'] = file_name
-                
+
                 # remove decimals
                 for i in ['14', '15', '16']:
                     try:
                         record[i] = str(int(record[i]))
                     except:
                         pass
-                    
+
                 params = tuple(record.values())
                 list_params.append(params[1:38])
-                    
-            if list_params:                
+
+            if list_params:
                 query = head + columns + values
                 # logging.info('execute query... /n' + query)
                 try:
                     db_connection.insert(query=query, params=list_params)
                 except Exception as e:
                     logger.error(str(e))
-                   
+
             new_folder = day + '-' + month + '-' + year
-            current_path = 'files/' + path
-            move_to = 'files/' + new_folder
+            current_path = os.path.join(files_path, path)
+            move_to = os.path.join(files_path, new_folder)
             create_folder(move_to)
             shutil.move(current_path, move_to)
 
             logger.info("Proceso Finalizado ")
-                    

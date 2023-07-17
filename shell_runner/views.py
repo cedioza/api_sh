@@ -27,21 +27,9 @@ def execute_shell_command(request):
 
 
         # Construir la ruta completa
-        ruta_deseada = os.path.join(ruta_actual, "var", "www", "html", "api_sh")
+       
 
-        # Cambiar al directorio deseado
-        os.chdir(ruta_deseada)
-
-        # Obtener una lista de elementos en la ruta deseada
-        elementos = os.listdir(ruta_deseada)
-
-        logger.info(f'Elementos en la ruta "{ruta_deseada}": {elementos}')
-
-    
-        # Restablecer la ruta actual
-        os.chdir(ruta_actual)
-
-        return Response({'ruta_actual': ruta_actual, 'elementos_ruta': elementos})
+        return Response({'test': "ok"})
 
     except Exception as e:
         error_message = 'Ocurrió un error: {}'.format(str(e))
