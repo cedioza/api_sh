@@ -25,6 +25,12 @@ def create_folder(folder, logger):
 def execute_process(logger):
     logger.info("Comienzo de proceso ")
 
+    ruta_actual = os.getcwd()
+
+    ruta_actual = os.path.join(ruta_actual, "var", "www", "html", "api_sh","files")
+    # Cambiar al directorio deseado
+    os.chdir(ruta_actual)
+
     """ Load directory path local and save mysql data """
     # list file and directories
 
@@ -156,7 +162,6 @@ def execute_process(logger):
             logger.info(f"current path actual: {current_path}")
 
             move_to = os.path.join(ruta_actual, new_folder)
-            ruta_actual = os.path.join(ruta_actual, 'files')
             logger.info(f"ruta actual para proceso: {ruta_actual}")
             logger.info(f"listado de archivos: {os.listdir(ruta_actual)}")
             logger.info(f"moviendo carpeta ")
