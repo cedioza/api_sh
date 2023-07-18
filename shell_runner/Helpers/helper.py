@@ -8,8 +8,7 @@ from .constants import (COLSPECS_COBRO, COLSPECS_COBRO_46, COLSPECS_PREV,
                         COLSPECS_PREV_24, COLUMNS_DB)
 
 
-ruta_actual = os.getcwd()
-
+ruta_actual = ""
 
 def create_folder(folder, logger):
     logger.info(f'Ruta actual: {folder}')
@@ -22,7 +21,7 @@ def create_folder(folder, logger):
 def execute_process(logger):
     logger.info("Comienzo de proceso ")
 
-    ruta_actual = os.getcwd()
+    
 
     ruta_actual = os.path.join(ruta_actual, "var", "www", "html", "api_sh","files")
     # Cambiar al directorio deseado
