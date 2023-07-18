@@ -25,15 +25,11 @@ def execute_process(logger):
     
     # Guardar la ruta actual
     ruta_principal = os.getcwd()
-    ruta_actual ='/var/www/html/api_sh/files'
-    # Verificar si ya estás en la ruta principal
-    if ruta_actual != ruta_principal:
-        logger.info(f'se encuentra en la ruta diferente "{ruta_principal}"')
 
-
-        # Cambiar al directorio deseado
-        ruta_actual = os.path.join(ruta_principal, "var", "www", "html", "api_sh", "files")
-        os.chdir(ruta_actual)
+    logger.info(f'se encuentra en la ruta diferente "{ruta_principal}"')
+    # Cambiar al directorio deseado
+    ruta_actual = os.path.join(ruta_principal, "var", "www", "html", "api_sh", "files")
+    os.chdir(ruta_actual)
     logger.info(f'se encuentra en la ruta igual {ruta_actual}')
     logger.info(f"test env { os.environ.get('MYSQL_DB_HOST')}")
    
