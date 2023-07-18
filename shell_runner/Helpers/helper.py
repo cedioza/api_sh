@@ -27,10 +27,14 @@ def execute_process(logger):
     ruta_actual ='/var/www/html/api_sh/files'
     # Verificar si ya estás en la ruta principal
     if ruta_actual != ruta_principal:
+        logger.info(f'se encuentra en la ruta diferente "{ruta_principal}"')
+
 
         # Cambiar al directorio deseado
         ruta_actual = os.path.join(ruta_principal, "var", "www", "html", "api_sh", "files")
         os.chdir(ruta_actual)
+    logger.info(f'se encuentra en la ruta igual {ruta_actual}')
+    
     os.chdir(ruta_actual)
 
     """ Load directory path local and save mysql data """
@@ -42,6 +46,9 @@ def execute_process(logger):
     for path in os.listdir(ruta_actual):
         if os.path.isfile(os.path.join(ruta_actual, path)):
             logger.info('Processing file: ' + path)
+
+            logger.info(f"inicia proceso dataframe carpeta ")
+
             # extract the file name and extension
             split_tup = os.path.splitext(path)
             file_name, _ = split_tup
@@ -107,56 +114,58 @@ def execute_process(logger):
             month = date_str[4:6]
             day = date_str[6:8]
             file_date = date(int(year), int(month), int(day))
+            logger.info(f"Termina proceso de dataframe")
+
 
             # Connect DB
-            # db_connection = MysqlConnection(
-            #     host=os.environ.get('MYSQL_DB_HOST'),
-            #     user=os.environ.get('MYSQL_DB_USER'),
-            #     password=os.environ.get('MYSQL_DB_PASSWORD'),
-            #     database=os.environ.get('MYSQL_DB_NAME')
-            # )
+            db_connection = MysqlConnection(
+                host=os.environ.get('MYSQL_DB_HOST'),
+                user=os.environ.get('MYSQL_DB_USER'),
+                password=os.environ.get('MYSQL_DB_PASSWORD'),
+                database=os.environ.get('MYSQL_DB_NAME')
+            )
 
-            # logger.info(f"conexion base de datos")
+            logger.info(f"conexion base de datos")
 
 
-            # head = "INSERT INTO %s " % db_table
-            # columns = '(%s)' % ','.join(data)
-            # values = """VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-            #     %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-            # """
+            head = "INSERT INTO %s " % db_table
+            columns = '(%s)' % ','.join(data)
+            values = """VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
+                %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            """
 
-            # logger.info(f"Información insertada con éxito en la tabla {db_table}")
-            # list_params = []
-            # for record in records:
-            #     if db_table == 'preventiva':
-            #         pattern = '\S+[\@]\S+'
-            #         email = re.findall(pattern, record['35'], re.IGNORECASE)
-            #         record['35'] = email[0] if email else ''
+            list_params = []
+            for record in records:
+                if db_table == 'preventiva':
+                    pattern = '\S+[\@]\S+'
+                    email = re.findall(pattern, record['35'], re.IGNORECASE)
+                    record['35'] = email[0] if email else ''
 
-            #     record['36'] = file_date
-            #     record['37'] = month
-            #     record['38'] = file_name
+                record['36'] = file_date
+                record['37'] = month
+                record['38'] = file_name
 
-            #     # remove decimals
-            #     for i in ['14', '15', '16']:
-            #         try:
-            #             record[i] = str(int(record[i]))
-            #         except:
-            #             pass
+                # remove decimals
+                for i in ['14', '15', '16']:
+                    try:
+                        record[i] = str(int(record[i]))
+                    except:
+                        pass
 
-            #     params = tuple(record.values())
-            #     list_params.append(params[1:38])
+                params = tuple(record.values())
+                list_params.append(params[1:38])
+            logger.info(f"creando consulta para insertar  ")
 
-            # if list_params:
-            #     query = head + columns + values
-            #     try:
-            #         db_connection.insert(query=query, params=list_params)
-            #         logger.info(f"se inserto con extio  carpeta ")
+            if list_params:
+                query = head + columns + values
+                try:
+                    db_connection.insert(query=query, params=list_params)
+                    logger.info(f"se inserto con extio  en base de datos ")
 
-            #     except Exception as e:
-            #         logger.info(f"error insertando base de datos ")
+                except Exception as e:
+                    logger.info(f"error insertando base de datos ")
 
-            #         logger.error(str(e))
+                    logger.error(str(e))
 
             new_folder = day + '-' + month + '-' + year
             logger.info(f"nombre carpeta: {new_folder}")
