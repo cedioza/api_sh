@@ -22,6 +22,8 @@ os.environ.setdefault("MYSQL_DB_HOST", "apps.ccsmckgi9ggi.us-east-1.rds.amazonaw
 os.environ.setdefault("MYSQL_DB_NAME", "api_colmena")
 
 
+
+
 user='uiamjssl5oopofpa'
 
 

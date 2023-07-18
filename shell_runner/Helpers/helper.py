@@ -2,11 +2,12 @@ import pandas as pd
 import re
 import numpy as np
 import os, shutil
+from dotenv import load_dotenv
 from datetime import date, datetime
 from .conn_db import MysqlConnection
 from .constants import (COLSPECS_COBRO, COLSPECS_COBRO_46, COLSPECS_PREV, 
                         COLSPECS_PREV_24, COLUMNS_DB)
-
+load_dotenv()
 
 
 
@@ -34,6 +35,8 @@ def execute_process(logger):
         ruta_actual = os.path.join(ruta_principal, "var", "www", "html", "api_sh", "files")
         os.chdir(ruta_actual)
     logger.info(f'se encuentra en la ruta igual {ruta_actual}')
+    logger.info(f"test env { os.environ.get('MYSQL_DB_HOST')}")
+   
     
     os.chdir(ruta_actual)
 
@@ -124,6 +127,8 @@ def execute_process(logger):
                 password=os.environ.get('MYSQL_DB_PASSWORD'),
                 database=os.environ.get('MYSQL_DB_NAME')
             )
+            logger.info(f"informacion database - host {os.environ.get('MYSQL_DB_HOST')} - username {os.environ.get('MYSQL_DB_USER')} - password {os.environ.get('MYSQL_DB_PASSWORD')}")
+
 
             logger.info(f"conexion base de datos")
 
