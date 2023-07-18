@@ -8,7 +8,7 @@ from .constants import (COLSPECS_COBRO, COLSPECS_COBRO_46, COLSPECS_PREV,
                         COLSPECS_PREV_24, COLUMNS_DB)
 
 
-ruta_actual = ""
+
 
 def create_folder(folder, logger):
     logger.info(f'Ruta actual: {folder}')
@@ -22,9 +22,15 @@ def execute_process(logger):
     logger.info("Comienzo de proceso ")
 
     
+    # Guardar la ruta actual
+    ruta_principal = os.getcwd()
+    ruta_actual ='/var/www/html/api_sh/files'
+    # Verificar si ya estás en la ruta principal
+    if ruta_actual != ruta_principal:
 
-    ruta_actual = os.path.join(ruta_actual, "var", "www", "html", "api_sh","files")
-    # Cambiar al directorio deseado
+        # Cambiar al directorio deseado
+        ruta_actual = os.path.join(ruta_principal, "var", "www", "html", "api_sh", "files")
+        os.chdir(ruta_actual)
     os.chdir(ruta_actual)
 
     """ Load directory path local and save mysql data """
