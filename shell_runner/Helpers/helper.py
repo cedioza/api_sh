@@ -60,27 +60,27 @@ def execute_process(logger):
             data = COLUMNS_DB[:34]
             if file_name.lower().startswith('cobro'):
                 date_str = file_name[21:29]
-                if len(file_name) > 29:
+                if file_name.lower().endswith("46_vt") or file_name.lower().endswith("_46") :
                     db_table = 'cobro_46'
                     data.extend(['fecha_dia_46', 'mes_a_trabajar', 'nombre_db'])
                     colspecs = COLSPECS_COBRO_46
                     for i in range(1, 36, 1):
                         names.append(str(i))
-                else:
+                elif file_name.lower().endswith("31_vt") or file_name.lower().endswith("_31") :
                     db_table = 'cobro'
                     colspecs = COLSPECS_COBRO
                     data.extend(['fecha_entrega_colmena', 'mes_a_trabajar', 'nombre_db'])
                     for i in range(1, 39, 1):
                         names.append(str(i))
             elif file_name.lower().startswith('preventiva'):
-                date_str = file_name[27:35]
-                if len(file_name) > 35:
+                date_str = file_name[26:34]
+                if file_name.lower().endswith("21_vt") or file_name.lower().endswith("21") :
                     db_table = 'preventiva'
                     colspecs = COLSPECS_PREV
                     data.extend(['fecha_entrega_colmena', 'mes_a_trabajar', 'nombre_db'])
                     for i in range(1, 36, 1):
                         names.append(str(i))
-                else:
+                elif file_name.lower().endswith("24_vt") or file_name.lower().endswith("24") :
                     db_table = 'preventiva_24'
                     colspecs = COLSPECS_PREV_24
                     data.extend(['fecha_dia_24', 'mes_a_trabajar', 'nombre_db'])
@@ -125,7 +125,7 @@ def execute_process(logger):
                 host=os.environ.get('MYSQL_DB_HOST'),
                 user=os.environ.get('MYSQL_DB_USER'),
                 password=os.environ.get('MYSQL_DB_PASSWORD'),
-                database=os.environ.get('MYSQL_DB_NAME')
+                database='api_colmena_test'
             )
             logger.info(f"informacion database - host {os.environ.get('MYSQL_DB_HOST')} - username {os.environ.get('MYSQL_DB_USER')} - password {os.environ.get('MYSQL_DB_PASSWORD')}")
 
