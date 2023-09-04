@@ -25,14 +25,21 @@ def execute_process(logger):
     
     # Guardar la ruta actual
     ruta_principal = os.getcwd()
-    ruta_actual ='/var/www/html/api_sh/files'
+    print("ruta principal", ruta_principal)
+    # ruta_actual ='/var/www/html/api_sh/files'
+    ruta_actual =''
+    
+    
+   
     # Verificar si ya estás en la ruta principal
     if ruta_actual != ruta_principal:
         logger.info(f'se encuentra en la ruta diferente "{ruta_principal}"')
 
 
         # Cambiar al directorio deseado
-        ruta_actual = os.path.join(ruta_principal, "var", "www", "html", "api_sh", "files")
+        # ruta_actual = os.path.join(ruta_principal, "var", "www", "html", "api_sh", "files")
+        ruta_actual = os.path.join(ruta_principal,"files")
+        
         os.chdir(ruta_actual)
     logger.info(f'se encuentra en la ruta igual {ruta_actual}')
     logger.info(f"test env -- { os.environ.get('MYSQL_DB_HOST')}")
@@ -60,32 +67,99 @@ def execute_process(logger):
             data = COLUMNS_DB[:34]
             if file_name.lower().startswith('cobro'):
                 date_str = file_name[21:29]
-                if file_name.lower().endswith("46_vt") or file_name.lower().endswith("_46") :
+                if file_name.lower().endswith("_46") :
                     db_table = 'cobro_46'
                     data.extend(['fecha_dia_46', 'mes_a_trabajar', 'nombre_db'])
                     colspecs = COLSPECS_COBRO_46
                     for i in range(1, 36, 1):
                         names.append(str(i))
-                elif file_name.lower().endswith("31_vt") or file_name.lower().endswith("_31") :
+                        
+                    print(f"file_name: {file_name}, table = {db_table} date = {date_str} ")
+                    print("---------------")  
+                    
+                elif file_name.lower().endswith("46_vt"):
+                    db_table = 'cobro_46'
+                    colspecs = COLSPECS_COBRO_46
+                    data.extend(['fecha_dia_46', 'mes_a_trabajar', 'nombre_db'])
+                    date_str = file_name.replace('-','').split('_')[1]
+                    for i in range(1, 36, 1):
+                        names.append(str(i))
+                        
+                    print(f"file_name: {file_name}, table = {db_table} date = {date_str} ")
+                    print("---------------")  
+                        
+                elif file_name.lower().endswith("_31") :
                     db_table = 'cobro'
                     colspecs = COLSPECS_COBRO
                     data.extend(['fecha_entrega_colmena', 'mes_a_trabajar', 'nombre_db'])
                     for i in range(1, 39, 1):
                         names.append(str(i))
+                        
+                    print(f"file_name: {file_name}, table = {db_table} date = {date_str} ")
+                    print("---------------")  
+                        
+                elif file_name.lower().endswith("31_vt") :
+                    db_table = 'cobro'
+                    colspecs = COLSPECS_COBRO
+                    data.extend(['fecha_entrega_colmena', 'mes_a_trabajar', 'nombre_db'])
+                    date_str = file_name.replace('-','').split('_')[1]
+                    for i in range(1, 39, 1):
+                        
+                        names.append(str(i))
+                        
+                    print(f"file_name: {file_name}, table = {db_table} date = {date_str} ")
+                    print("---------------")  
+                        
             elif file_name.lower().startswith('preventiva'):
                 date_str = file_name[26:34]
-                if file_name.lower().endswith("21_vt") or file_name.lower().endswith("21") :
+                if file_name.lower().endswith("21") :
                     db_table = 'preventiva'
                     colspecs = COLSPECS_PREV
                     data.extend(['fecha_entrega_colmena', 'mes_a_trabajar', 'nombre_db'])
+                    date_str= file_name.replace('-','').split('_')[2]
                     for i in range(1, 36, 1):
                         names.append(str(i))
-                elif file_name.lower().endswith("24_vt") or file_name.lower().endswith("24") :
+                        
+                    print(f"file_name: {file_name}, table = {db_table} date = {date_str} ")
+                    print("---------------")  
+                        
+                elif file_name.lower().endswith("21_vt") :
+                    db_table = 'preventiva'
+                    colspecs = COLSPECS_PREV
+                    data.extend(['fecha_entrega_colmena', 'mes_a_trabajar', 'nombre_db'])
+                    
+                    
+                    date_str  = file_name.replace('-','').split('_')[1]
+                    for i in range(1, 36, 1):
+                        names.append(str(i))
+                    print(f"file_name: {file_name}, table = {db_table} date = {date_str} ")
+                    print("---------------")                        
+                        
+                        
+                elif file_name.lower().endswith("_24") :
                     db_table = 'preventiva_24'
                     colspecs = COLSPECS_PREV_24
                     data.extend(['fecha_dia_24', 'mes_a_trabajar', 'nombre_db'])
+                    date_str= file_name.replace('-','').split('_')[2]
                     for i in range(1, 36, 1):
                         names.append(str(i))
+                    
+                    print(f"file_name: {file_name}, table = {db_table} date = {date_str} ")
+                    print("---------------")      
+                        
+                elif file_name.lower().endswith("24_vt")  :
+                    db_table = 'preventiva_24'
+                    colspecs = COLSPECS_PREV_24
+                    data.extend(['fecha_dia_24', 'mes_a_trabajar', 'nombre_db'])
+                    
+                    date_str= file_name.replace('-','').split('_')[1]
+                    for i in range(1, 36, 1):
+                        names.append(str(i))
+                    
+                    print(f"file_name: {file_name}, table = {db_table} date = {date_str} ")
+                    print("---------------")      
+                        
+                    
             else:
                 continue
 
@@ -125,7 +199,7 @@ def execute_process(logger):
                 host=os.environ.get('MYSQL_DB_HOST'),
                 user=os.environ.get('MYSQL_DB_USER'),
                 password=os.environ.get('MYSQL_DB_PASSWORD'),
-                database='api_colmena_test'
+                database=os.environ.get('MYSQL_DB_NAME')
             )
             logger.info(f"informacion database - host {os.environ.get('MYSQL_DB_HOST')} - username {os.environ.get('MYSQL_DB_USER')} - password {os.environ.get('MYSQL_DB_PASSWORD')}")
 
@@ -183,7 +257,6 @@ def execute_process(logger):
             logger.info(f"moviendo carpeta ")
             logger.info(f" ruta a mover :{new_folder}")
             create_folder(new_folder,logger)
-            logger.info(f"muere intentando mover  carpeta ")
             shutil.move(current_path, move_to)
 
             logger.info("Proceso Finalizado ")
