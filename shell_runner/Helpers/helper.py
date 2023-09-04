@@ -25,9 +25,8 @@ def execute_process(logger):
     
     # Guardar la ruta actual
     ruta_principal = os.getcwd()
-    print("ruta principal", ruta_principal)
-    # ruta_actual ='/var/www/html/api_sh/files'
-    ruta_actual =''
+    # print("ruta principal", ruta_principal)
+    ruta_actual ='/var/www/html/api_sh/files'
     
     
    
@@ -37,8 +36,8 @@ def execute_process(logger):
 
 
         # Cambiar al directorio deseado
-        # ruta_actual = os.path.join(ruta_principal, "var", "www", "html", "api_sh", "files")
-        ruta_actual = os.path.join(ruta_principal,"files")
+        ruta_actual = os.path.join(ruta_principal, "var", "www", "html", "api_sh", "files")
+        # ruta_actual = os.path.join(ruta_principal,"files")
         
         os.chdir(ruta_actual)
     logger.info(f'se encuentra en la ruta igual {ruta_actual}')
