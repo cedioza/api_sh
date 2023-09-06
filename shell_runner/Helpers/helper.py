@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 from datetime import date, datetime
 from .conn_db import MysqlConnection
 from .constants import (COLSPECS_COBRO, COLSPECS_COBRO_46, COLSPECS_PREV, 
-                        COLSPECS_PREV_24, COLUMNS_DB)
+                        COLSPECS_PREV_24, COLSPECS_COBRO_VT,
+                        COLSPECS_PREV_VT, COLUMNS_DB)
 load_dotenv()
 
 
@@ -78,7 +79,7 @@ def execute_process(logger):
                     
                 elif file_name.lower().endswith("46_vt"):
                     db_table = 'cobro_46'
-                    colspecs = COLSPECS_COBRO_46
+                    colspecs = COLSPECS_COBRO_VT
                     data.extend(['fecha_dia_46', 'mes_a_trabajar', 'nombre_db'])
                     date_str = file_name.replace('-','').split('_')[1]
                     for i in range(1, 36, 1):
@@ -99,10 +100,10 @@ def execute_process(logger):
                         
                 elif file_name.lower().endswith("31_vt") :
                     db_table = 'cobro'
-                    colspecs = COLSPECS_COBRO
+                    colspecs = COLSPECS_COBRO_VT
                     data.extend(['fecha_entrega_colmena', 'mes_a_trabajar', 'nombre_db'])
                     date_str = file_name.replace('-','').split('_')[1]
-                    for i in range(1, 39, 1):
+                    for i in range(1, 36, 1):
                         
                         names.append(str(i))
                         
@@ -124,7 +125,7 @@ def execute_process(logger):
                         
                 elif file_name.lower().endswith("21_vt") :
                     db_table = 'preventiva'
-                    colspecs = COLSPECS_PREV
+                    colspecs = COLSPECS_PREV_VT
                     data.extend(['fecha_entrega_colmena', 'mes_a_trabajar', 'nombre_db'])
                     
                     
@@ -148,7 +149,7 @@ def execute_process(logger):
                         
                 elif file_name.lower().endswith("24_vt")  :
                     db_table = 'preventiva_24'
-                    colspecs = COLSPECS_PREV_24
+                    colspecs = COLSPECS_PREV_VT
                     data.extend(['fecha_dia_24', 'mes_a_trabajar', 'nombre_db'])
                     
                     date_str= file_name.replace('-','').split('_')[1]
